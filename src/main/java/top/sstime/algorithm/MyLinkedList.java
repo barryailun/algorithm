@@ -53,6 +53,22 @@ public class MyLinkedList<T> implements Iterable<T> {
         return size() == 0;
     }
 
+    public boolean add(T x) {
+        add(size(), x);
+        return true;
+    }
+
+    private void add(int idx, T x) {
+        addBefore(getNode(idx, 0, size()), x);
+    }
+
+    private void addBefore(Node<T> node, T x) {
+    }
+
+    private Node<T> getNode(int idx, int i, int size) {
+        return null;
+    }
+
     @Override
     public Iterator<T> iterator() {
         return null;
