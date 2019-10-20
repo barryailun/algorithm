@@ -1,6 +1,8 @@
 package top.sstime.algorithm;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * 使用双链表实现
@@ -106,18 +108,39 @@ public class MyLinkedList<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return null;
+        return new LinkedListIterator();
     }
 
     private class LinkedListIterator implements Iterator<T> {
+        private Node<T> current = beginMarker.next;
+        private int expectedModCount = modCount;
+        private boolean okToRemove = false;
         @Override
         public boolean hasNext() {
-            return false;
+            return current != endMarker;
         }
 
         @Override
         public T next() {
-            return null;
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+            if (!hasNext())
+                throw new NoSuchElementException();
+            T nextItem = current.data;
+            current = current.next;
+            okToRemove = true;
+            return nextItem;
+        }
+
+        public void remove() {
+            if (modCount != expectedModCount)
+                throw new ConcurrentModificationException();
+            if (!okToRemove)
+                throw new IllegalStateException();
+
+            MyLinkedList.this.remove(current.prev);
+            expectedModCount++;
+            okToRemove = false;
         }
     }
 }
