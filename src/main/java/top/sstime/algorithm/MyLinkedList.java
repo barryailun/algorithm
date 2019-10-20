@@ -64,6 +64,17 @@ public class MyLinkedList<T> implements Iterable<T> {
         addBefore(getNode(idx, 0, size()), x);
     }
 
+    public T get(int idx) {
+        return getNode(idx).data;
+    }
+
+    public T set(int idx, T newVal) {
+        Node<T> p = getNode(idx);
+        T oldVal = p.data;
+        p.data = newVal;
+        return oldVal;
+    }
+
     /**
      * 通过获取一个新的节点，然后按所指示的顺序改变指针而完成一个双链表的插入操作
      * @param node
